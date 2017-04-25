@@ -27,5 +27,6 @@ generate = [
 manual = [
     "Gdk.CursorType",
     "GLib.Error",
+    "Gtk.Widget",
     "Pango.FontDescription",
 ]

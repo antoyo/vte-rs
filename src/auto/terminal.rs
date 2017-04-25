@@ -11,6 +11,8 @@ use gdk;
 use glib::signal::connect;
 use glib::translate::*;
 use glib_ffi;
+use gtk;
+use gtk_ffi;
 use libc;
 use pango;
 use std::boxed::Box as Box_;
@@ -19,7 +21,9 @@ use std::mem::transmute;
 use std::ptr;
 
 glib_wrapper! {
-    pub struct Terminal(Object<ffi::VteTerminal>);
+    pub struct Terminal(Object<ffi::VteTerminal>): [
+        gtk::Widget => gtk_ffi::GtkWidget,
+    ];
 
     match fn {
         get_type => || ffi::vte_terminal_get_type(),
