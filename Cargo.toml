@@ -1,0 +1,15 @@
+[package]
+authors = ["Antoni Boucher <bouanto@zoho.com>"]
+description = "Rust bindings for the VTE 3 library"
+name = "vte-rs"
+version = "0.1.0"
+
+[dependencies]
+bitflags = "^0.8.2"
+gdk = "^0.5.2"
+glib = "^0.1.2"
+glib-sys = "^0.3.3"
+gtk = "^0.1.2"
+libc = "^0.2.21"
+pango = "^0.1.2"
+vte-sys = "^0.2.0"

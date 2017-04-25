@@ -1,0 +1,31 @@
+[options]
+gir_dir = "input"
+library = "Vte"
+version = "2.91"
+work_mode = "normal"
+generate_safety_asserts = true
+external_libraries = [
+    "Gdk",
+    "Gio",
+    "GLib",
+    "Gtk",
+    "Pango",
+]
+
+generate = [
+    "Vte.CursorBlinkMode",
+    "Vte.CursorShape",
+    "Vte.EraseBinding",
+    "Vte.Pty",
+    "Vte.PtyError",
+    "Vte.PtyFlags",
+    "Vte.SelectionFunc",
+    "Vte.Terminal",
+    "Vte.WriteFlags",
+]
+
+manual = [
+    "Gdk.CursorType",
+    "GLib.Error",
+    "Pango.FontDescription",
+]
