@@ -1,6 +1,7 @@
 [package]
 authors = ["Antoni Boucher <bouanto@zoho.com>"]
 description = "Rust bindings for the VTE 3 library"
+license = "MIT"
 name = "vte-rs"
 version = "0.1.0"
 
