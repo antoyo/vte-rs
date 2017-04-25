@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate bitflags;
 extern crate gdk;
+extern crate gio_sys as gio_ffi;
 #[macro_use]
 extern crate glib;
 extern crate glib_sys as glib_ffi;
