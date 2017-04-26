@@ -1,8 +1,10 @@
+use std::path::PathBuf;
 use std::ptr;
 
 use ffi;
 use gdk;
 use glib::translate::*;
+use glib_ffi;
 use Terminal;
 
 impl Terminal {
