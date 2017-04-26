@@ -1,9 +1,11 @@
+#[cfg(feature="v0_48")]
 use std::path::PathBuf;
 use std::ptr;
 
 use ffi;
 use gdk;
 use glib::translate::*;
+#[cfg(feature="v0_48")]
 use glib_ffi;
 use Terminal;
 
