@@ -3,7 +3,7 @@ authors = ["Antoni Boucher <bouanto@zoho.com>"]
 description = "Rust bindings for the VTE 3 library"
 license = "MIT"
 name = "vte-rs"
-version = "0.1.4"
+version = "0.1.5"
 
 [dependencies]
 bitflags = "^0.8.2"
@@ -22,4 +22,8 @@ vte-sys = "^0.2.0"
 name = "vte"
 
 [features]
-v_0_48 = ["vte-sys/v0_48"]
+v0_40 = ["vte-sys/v0_40"]
+v0_42 = ["v0_40", "vte-sys/v0_42"]
+v0_44 = ["v0_42", "vte-sys/v0_44"]
+v0_46 = ["v0_44", "vte-sys/v0_46"]
+v0_48 = ["v0_46", "vte-sys/v0_48"]
