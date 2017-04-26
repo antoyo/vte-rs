@@ -5,6 +5,7 @@ extern crate gio_sys as gio_ffi;
 #[macro_use]
 extern crate glib;
 extern crate glib_sys as glib_ffi;
+extern crate gobject_sys as gobject_ffi;
 extern crate gtk;
 extern crate gtk_sys as gtk_ffi;
 extern crate libc;
@@ -38,4 +39,5 @@ use glib::Error;
 pub use auto::*;
 
 mod auto;
+mod regex;
 mod terminal;

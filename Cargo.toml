@@ -11,6 +11,7 @@ gdk = "^0.5.2"
 gio-sys = "^0.3.3"
 glib = "^0.1.2"
 glib-sys = "^0.3.3"
+gobject-sys = "^0.3.3"
 gtk = "^0.1.2"
 gtk-sys = "^0.3.3"
 libc = "^0.2.21"
@@ -19,3 +20,6 @@ vte-sys = "^0.2.0"
 
 [lib]
 name = "vte"
+
+[features]
+v_0_48 = ["vte-sys/v0_48"]

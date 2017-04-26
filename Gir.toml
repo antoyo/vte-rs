@@ -19,6 +19,7 @@ generate = [
     "Vte.Pty",
     "Vte.PtyError",
     "Vte.PtyFlags",
+    "Vte.Regex",
     "Vte.SelectionFunc",
     "Vte.Terminal",
     "Vte.WriteFlags",
