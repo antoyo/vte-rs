@@ -1,11 +1,9 @@
-#[cfg(feature="v0_48")]
 use std::path::PathBuf;
 use std::ptr;
 
 use ffi;
 use gdk;
 use glib::translate::*;
-#[cfg(feature="v0_48")]
 use glib_ffi;
 use Terminal;
 
@@ -59,6 +57,15 @@ impl Terminal {
     pub fn set_color_highlight_foreground(&self, highlight_foreground: Option<&gdk::RGBA>) {
         unsafe {
             ffi::vte_terminal_set_color_highlight_foreground(self.to_glib_none().0, option_to_ptr!(highlight_foreground));
+        }
+    }
+
+    pub fn spawn_sync(&self, working_directory: Option<PathBuf>, argv: &[&str], envv: &[&str]) {
+        let directory = working_directory.as_ref().map(|path_buf| path_buf.as_path());
+        unsafe {
+            ffi::vte_terminal_spawn_sync(self.to_glib_none().0, ffi::VTE_PTY_DEFAULT,
+                directory.to_glib_none().0, argv.to_glib_none().0, envv.to_glib_none().0,
+                glib_ffi::G_SPAWN_DEFAULT, None, ptr::null_mut(), ptr::null_mut(), ptr::null_mut(), ptr::null_mut());
         }
     }
 
