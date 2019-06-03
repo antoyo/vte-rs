@@ -1,9 +1,8 @@
 [options]
-gir_dir = "input"
+girs_dir = "../gir-files"
 library = "Vte"
 version = "2.91"
 work_mode = "normal"
-generate_safety_asserts = true
 external_libraries = [
     "Gdk",
     "Gio",
@@ -11,23 +10,42 @@ external_libraries = [
     "Gtk",
     "Pango",
 ]
+target_path = "."
+generate_safety_asserts = true
+deprecate_by_min_version = true
+single_version_file = true
 
 generate = [
     "Vte.CursorBlinkMode",
     "Vte.CursorShape",
     "Vte.EraseBinding",
+    "Vte.Format",
     "Vte.Pty",
     "Vte.PtyError",
     "Vte.PtyFlags",
     "Vte.Regex",
     "Vte.SelectionFunc",
-    "Vte.Terminal",
+    "Vte.TextBlinkMode",
     "Vte.WriteFlags",
 ]
 
 manual = [
+    "Gdk.Cursor",
     "Gdk.CursorType",
+    "Gdk.Event",
+    "Gdk.RGBA",
+    "Gio.AsyncResult",
+    "Gio.Cancellable",
+    "Gio.OutputStream",
     "GLib.Error",
     "Gtk.Widget",
+    "Gtk.Window",
     "Pango.FontDescription",
 ]
+
+[[object]]
+name = "Vte.Terminal"
+status = "generate"
+    [[object.function]]
+    name = "set_colors"
+    ignore = true

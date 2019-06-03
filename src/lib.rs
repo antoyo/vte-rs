@@ -1,16 +1,18 @@
 #[macro_use]
 extern crate bitflags;
 extern crate gdk;
-extern crate gio_sys as gio_ffi;
+extern crate gdk_sys;
+extern crate gio;
+extern crate gio_sys;
 #[macro_use]
 extern crate glib;
-extern crate glib_sys as glib_ffi;
-extern crate gobject_sys as gobject_ffi;
+extern crate glib_sys;
+extern crate gobject_sys;
 extern crate gtk;
-extern crate gtk_sys as gtk_ffi;
+extern crate gtk_sys;
 extern crate libc;
 extern crate pango;
-extern crate vte_sys as ffi;
+extern crate vte_sys;
 
 macro_rules! assert_initialized_main_thread {
     () => (
@@ -29,15 +31,9 @@ macro_rules! skip_assert_initialized {
     () => ()
 }
 
-macro_rules! callback_guard {
-    () => (
-        let _guard = ::glib::CallbackGuard::new();
-    )
-}
-
 use glib::Error;
 pub use auto::*;
+pub use terminal::*;
 
 mod auto;
-mod regex;
 mod terminal;
