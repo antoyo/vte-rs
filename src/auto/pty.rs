@@ -5,6 +5,8 @@
 use Error;
 use PtyFlags;
 use gio;
+#[cfg(any(feature = "v0_48", feature = "dox"))]
+use glib;
 use glib::StaticType;
 use glib::Value;
 use glib::object::IsA;
@@ -64,10 +66,12 @@ impl Pty {
 
     pub fn get_size(&self) -> Result<(i32, i32), Error> {
         unsafe {
-            let mut rows = mem::uninitialized();
-            let mut columns = mem::uninitialized();
+            let mut rows = mem::MaybeUninit::uninit();
+            let mut columns = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
-            let _ = vte_sys::vte_pty_get_size(self.to_glib_none().0, &mut rows, &mut columns, &mut error);
+            let _ = vte_sys::vte_pty_get_size(self.to_glib_none().0, rows.as_mut_ptr(), columns.as_mut_ptr(), &mut error);
+            let rows = rows.assume_init();
+            let columns = columns.assume_init();
             if error.is_null() { Ok((rows, columns)) } else { Err(from_glib_full(error)) }
         }
     }
@@ -89,13 +93,13 @@ impl Pty {
     }
 
     //#[cfg(any(feature = "v0_48", feature = "dox"))]
-    //pub fn spawn_async<P: IsA<gio::Cancellable>, Q: FnOnce(Result</*Ignored*/glib::Pid, Error>) + Send + 'static>(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: /*Ignored*/glib::SpawnFlags, child_setup: Option<Box<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32, cancellable: Option<&P>, callback: Q) {
+    //pub fn spawn_async<P: IsA<gio::Cancellable>, Q: FnOnce(Result<glib::Pid, Error>) + Send + 'static>(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32, cancellable: Option<&P>, callback: Q) {
     //    unsafe { TODO: call vte_sys:vte_pty_spawn_async() }
     //}
 
-    //#[cfg(feature = "futures")]
+    //#[cfg(any(feature = "futures", feature = "dox"))]
     //#[cfg(any(feature = "v0_48", feature = "dox"))]
-    //pub fn spawn_async_future(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: /*Ignored*/glib::SpawnFlags, child_setup: Option<Box<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32) -> Box_<future::Future<Output = Result<, >> + std::marker::Unpin> {
+    //pub fn spawn_async_future(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32) -> Box_<dyn future::Future<Output = Result<, >> + std::marker::Unpin> {
         //use gio::GioFuture;
         //use fragile::Fragile;
 
@@ -128,7 +132,7 @@ impl Pty {
         unsafe {
             let mut value = Value::from_type(<PtyFlags as StaticType>::static_type());
             gobject_sys::g_object_get_property(self.as_ptr() as *mut gobject_sys::GObject, b"flags\0".as_ptr() as *const _, value.to_glib_none_mut().0);
-            value.get().unwrap()
+            value.get().expect("Return Value for property `flags` getter").unwrap()
         }
     }
 }
