@@ -23,7 +23,6 @@ generate = [
     "Vte.Pty",
     "Vte.PtyError",
     "Vte.PtyFlags",
-    "Vte.Regex",
     "Vte.SelectionFunc",
     "Vte.TextBlinkMode",
     "Vte.WriteFlags",
@@ -38,9 +37,12 @@ manual = [
     "Gio.Cancellable",
     "Gio.OutputStream",
     "GLib.Error",
+    "GLib.Pid",
+    "GLib.SpawnFlags",
     "Gtk.Widget",
     "Gtk.Window",
     "Pango.FontDescription",
+    "Vte.Regex",
 ]
 
 [[object]]
@@ -48,4 +50,7 @@ name = "Vte.Terminal"
 status = "generate"
     [[object.function]]
     name = "set_colors"
+    ignore = true
+    [[object.function]]
+    name = "event_check_regex_simple"
     ignore = true
