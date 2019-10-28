@@ -31,7 +31,6 @@ macro_rules! skip_assert_initialized {
     () => ()
 }
 
-use glib::Error;
 pub use auto::*;
 pub use terminal::*;
 
