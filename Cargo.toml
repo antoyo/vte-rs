@@ -7,18 +7,18 @@ version = "0.2.0"
 
 [dependencies]
 bitflags = "1"
-gdk-sys = "0.9"
-gdk = "0.11"
-gio-sys = "0.9"
-gio = "0.7"
-glib = "0.8"
-glib-sys = "0.9"
-gobject-sys = "0.9"
-gtk = "0.7"
-gtk-sys = "0.9"
-libc = "0.2"
-pango = "0.7"
-vte-sys = { path="./vte-sys-rs" }
+gdk-sys = { git="https://github.com/gtk-rs/sys" }
+gdk = { git="https://github.com/gtk-rs/gdk" }
+gio = { git="https://github.com/gtk-rs/gio" }
+gio-sys = { git="https://github.com/gtk-rs/sys" }
+glib = { git="https://github.com/gtk-rs/glib" }
+glib-sys = { git="https://github.com/gtk-rs/sys" }
+gobject-sys = { git="https://github.com/gtk-rs/sys" }
+gtk = { git="https://github.com/gtk-rs/gtk" }
+gtk-sys = { git="https://github.com/gtk-rs/sys" }
+libc = ""
+pango = { git="https://github.com/gtk-rs/pango" }
+vte-sys = { path="vte-sys-rs"}
 
 [lib]
 name = "vte"

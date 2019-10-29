@@ -5,7 +5,6 @@
 use CursorBlinkMode;
 use CursorShape;
 use EraseBinding;
-use Error;
 #[cfg(any(feature = "v0_50", feature = "dox"))]
 use Format;
 use Pty;
@@ -160,6 +159,7 @@ pub trait TerminalExt: 'static {
     #[cfg(any(feature = "v0_52", feature = "dox"))]
     fn get_text_blink_mode(&self) -> TextBlinkMode;
 
+    //#[cfg_attr(feature = "v0_56", deprecated)]
     //fn get_text_include_trailing_spaces(&self, is_selected: Option<&mut dyn (FnMut(&Terminal, libc::c_long, libc::c_long) -> bool)>, attributes: /*Unknown conversion*//*Unimplemented*/Array TypeId { ns_id: 1, id: 0 }) -> Option<GString>;
 
     //fn get_text_range(&self, start_row: libc::c_long, start_col: libc::c_long, end_row: libc::c_long, end_col: libc::c_long, is_selected: Option<&mut dyn (FnMut(&Terminal, libc::c_long, libc::c_long) -> bool)>, attributes: /*Unknown conversion*//*Unimplemented*/Array TypeId { ns_id: 1, id: 0 }) -> Option<GString>;
@@ -199,7 +199,7 @@ pub trait TerminalExt: 'static {
 
     fn paste_primary(&self);
 
-    fn pty_new_sync<P: IsA<gio::Cancellable>>(&self, flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, Error>;
+    fn pty_new_sync<P: IsA<gio::Cancellable>>(&self, flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, glib::Error>;
 
     fn reset(&self, clear_tabstops: bool, clear_history: bool);
 
@@ -272,7 +272,7 @@ pub trait TerminalExt: 'static {
     fn set_delete_binding(&self, binding: EraseBinding);
 
     #[cfg_attr(feature = "v0_54", deprecated)]
-    fn set_encoding(&self, codeset: Option<&str>) -> Result<(), Error>;
+    fn set_encoding(&self, codeset: Option<&str>) -> Result<(), glib::Error>;
 
     fn set_font(&self, font_desc: Option<&pango::FontDescription>);
 
@@ -304,16 +304,16 @@ pub trait TerminalExt: 'static {
     fn set_word_char_exceptions(&self, exceptions: &str);
 
     #[cfg(any(feature = "v0_48", feature = "dox"))]
-    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q);
+    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q);
 
     #[cfg_attr(feature = "v0_48", deprecated)]
-    fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, Error>;
+    fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, glib::Error>;
 
     fn unselect_all(&self);
 
     fn watch_child(&self, child_pid: glib::Pid);
 
-    fn write_contents_sync<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, flags: WriteFlags, cancellable: Option<&Q>) -> Result<(), Error>;
+    fn write_contents_sync<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, flags: WriteFlags, cancellable: Option<&Q>) -> Result<(), glib::Error>;
 
     fn get_property_backspace_binding(&self) -> EraseBinding;
 
@@ -816,7 +816,7 @@ impl<O: IsA<Terminal>> TerminalExt for O {
         }
     }
 
-    fn pty_new_sync<P: IsA<gio::Cancellable>>(&self, flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, Error> {
+    fn pty_new_sync<P: IsA<gio::Cancellable>>(&self, flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let ret = vte_sys::vte_terminal_pty_new_sync(self.as_ref().to_glib_none().0, flags.to_glib(), cancellable.map(|p| p.as_ref()).to_glib_none().0, &mut error);
@@ -1008,7 +1008,7 @@ impl<O: IsA<Terminal>> TerminalExt for O {
         }
     }
 
-    fn set_encoding(&self, codeset: Option<&str>) -> Result<(), Error> {
+    fn set_encoding(&self, codeset: Option<&str>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = vte_sys::vte_terminal_set_encoding(self.as_ref().to_glib_none().0, codeset.to_glib_none().0, &mut error);
@@ -1097,9 +1097,9 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     }
 
     #[cfg(any(feature = "v0_48", feature = "dox"))]
-    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q) {
+    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q) {
         let child_setup_data: Box_<Option<Box_<dyn Fn() + 'static>>> = Box_::new(child_setup);
-        unsafe extern "C" fn child_setup_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &Error) + 'static>(user_data: glib_sys::gpointer) {
+        unsafe extern "C" fn child_setup_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(user_data: glib_sys::gpointer) {
             let callback: &Option<Box_<dyn Fn() + 'static>> = &*(user_data as *mut _);
             if let Some(ref callback) = *callback {
                 callback()
@@ -1109,15 +1109,15 @@ impl<O: IsA<Terminal>> TerminalExt for O {
         }
         let child_setup = if child_setup_data.is_some() { Some(child_setup_func::<P, Q> as _) } else { None };
         let callback_data: Box_<Q> = Box_::new(callback);
-        unsafe extern "C" fn callback_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &Error) + 'static>(terminal: *mut vte_sys::VteTerminal, pid: glib_sys::GPid, error: *mut glib_sys::GError, user_data: glib_sys::gpointer) {
+        unsafe extern "C" fn callback_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(terminal: *mut vte_sys::VteTerminal, pid: glib_sys::GPid, error: *mut glib_sys::GError, user_data: glib_sys::gpointer) {
             let terminal = from_glib_borrow(terminal);
-            let pid = glib::FromGlib::from_glib(pid);
+            let pid = from_glib(pid);
             let error = from_glib_borrow(error);
-            let callback: &Option<Box_<dyn Fn() + 'static>> = &*(user_data as *mut _);
+            let callback: &Q = &*(user_data as *mut _);
             (*callback)(&terminal, pid, &error);
         }
         let callback = Some(callback_func::<P, Q> as _);
-        unsafe extern "C" fn child_setup_data_destroy_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &Error) + 'static>(data: glib_sys::gpointer) {
+        unsafe extern "C" fn child_setup_data_destroy_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(data: glib_sys::gpointer) {
             let _callback: Box_<Option<Box_<dyn Fn() + 'static>>> = Box_::from_raw(data as *mut _);
         }
         let destroy_call8 = Some(child_setup_data_destroy_func::<P, Q> as _);
@@ -1128,7 +1128,7 @@ impl<O: IsA<Terminal>> TerminalExt for O {
         }
     }
 
-    fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, Error> {
+    fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, glib::Error> {
         let child_setup_data: Option<&mut dyn (FnMut())> = child_setup;
         unsafe extern "C" fn child_setup_func<P: IsA<gio::Cancellable>>(user_data: glib_sys::gpointer) {
             let callback: *mut Option<&mut dyn (FnMut())> = user_data as *const _ as usize as *mut Option<&mut dyn (FnMut())>;
@@ -1144,7 +1144,7 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             let mut child_pid = mem::MaybeUninit::uninit();
             let mut error = ptr::null_mut();
             let _ = vte_sys::vte_terminal_spawn_sync(self.as_ref().to_glib_none().0, pty_flags.to_glib(), working_directory.to_glib_none().0, argv.to_glib_none().0, envv.to_glib_none().0, spawn_flags.to_glib(), child_setup, super_callback0 as *const _ as usize as *mut _, child_pid.as_mut_ptr(), cancellable.map(|p| p.as_ref()).to_glib_none().0, &mut error);
-            let child_pid = child_pid.assume_init();
+            let child_pid = from_glib(child_pid.assume_init());
             if error.is_null() { Ok(child_pid) } else { Err(from_glib_full(error)) }
         }
     }
@@ -1157,11 +1157,11 @@ impl<O: IsA<Terminal>> TerminalExt for O {
 
     fn watch_child(&self, child_pid: glib::Pid) {
         unsafe {
-            vte_sys::vte_terminal_watch_child(self.as_ref().to_glib_none().0, child_pid);
+            vte_sys::vte_terminal_watch_child(self.as_ref().to_glib_none().0, child_pid.to_glib());
         }
     }
 
-    fn write_contents_sync<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, flags: WriteFlags, cancellable: Option<&Q>) -> Result<(), Error> {
+    fn write_contents_sync<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, flags: WriteFlags, cancellable: Option<&Q>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = vte_sys::vte_terminal_write_contents_sync(self.as_ref().to_glib_none().0, stream.as_ref().to_glib_none().0, flags.to_glib(), cancellable.map(|p| p.as_ref()).to_glib_none().0, &mut error);

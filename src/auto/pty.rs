@@ -2,10 +2,8 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use Error;
 use PtyFlags;
 use gio;
-#[cfg(any(feature = "v0_48", feature = "dox"))]
 use glib;
 use glib::StaticType;
 use glib::Value;
@@ -27,7 +25,7 @@ glib_wrapper! {
 }
 
 impl Pty {
-    pub fn new_foreign_sync<P: IsA<gio::Cancellable>>(fd: i32, cancellable: Option<&P>) -> Result<Pty, Error> {
+    pub fn new_foreign_sync<P: IsA<gio::Cancellable>>(fd: i32, cancellable: Option<&P>) -> Result<Pty, glib::Error> {
         assert_initialized_main_thread!();
         unsafe {
             let mut error = ptr::null_mut();
@@ -36,7 +34,7 @@ impl Pty {
         }
     }
 
-    pub fn new_sync<P: IsA<gio::Cancellable>>(flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, Error> {
+    pub fn new_sync<P: IsA<gio::Cancellable>>(flags: PtyFlags, cancellable: Option<&P>) -> Result<Pty, glib::Error> {
         assert_initialized_main_thread!();
         unsafe {
             let mut error = ptr::null_mut();
@@ -64,7 +62,7 @@ impl Pty {
         }
     }
 
-    pub fn get_size(&self) -> Result<(i32, i32), Error> {
+    pub fn get_size(&self) -> Result<(i32, i32), glib::Error> {
         unsafe {
             let mut rows = mem::MaybeUninit::uninit();
             let mut columns = mem::MaybeUninit::uninit();
@@ -76,7 +74,7 @@ impl Pty {
         }
     }
 
-    pub fn set_size(&self, rows: i32, columns: i32) -> Result<(), Error> {
+    pub fn set_size(&self, rows: i32, columns: i32) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = vte_sys::vte_pty_set_size(self.to_glib_none().0, rows, columns, &mut error);
@@ -84,7 +82,7 @@ impl Pty {
         }
     }
 
-    pub fn set_utf8(&self, utf8: bool) -> Result<(), Error> {
+    pub fn set_utf8(&self, utf8: bool) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
             let _ = vte_sys::vte_pty_set_utf8(self.to_glib_none().0, utf8.to_glib(), &mut error);
@@ -93,7 +91,7 @@ impl Pty {
     }
 
     //#[cfg(any(feature = "v0_48", feature = "dox"))]
-    //pub fn spawn_async<P: IsA<gio::Cancellable>, Q: FnOnce(Result<glib::Pid, Error>) + Send + 'static>(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32, cancellable: Option<&P>, callback: Q) {
+    //pub fn spawn_async<P: IsA<gio::Cancellable>, Q: FnOnce(Result<glib::Pid, glib::Error>) + Send + 'static>(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32, cancellable: Option<&P>, callback: Q) {
     //    unsafe { TODO: call vte_sys:vte_pty_spawn_async() }
     //}
 
