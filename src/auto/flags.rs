@@ -2,13 +2,13 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use glib::StaticType;
-use glib::Type;
 use glib::translate::*;
 use glib::value::FromValue;
 use glib::value::FromValueOptional;
 use glib::value::SetValue;
 use glib::value::Value;
+use glib::StaticType;
+use glib::Type;
 use gobject_sys;
 use vte_sys;
 
@@ -19,6 +19,8 @@ bitflags! {
         const NO_WTMP = 4;
         const NO_HELPER = 8;
         const NO_FALLBACK = 16;
+        const NO_SESSION = 32;
+        const NO_CTTY = 64;
         const DEFAULT = 0;
     }
 }
