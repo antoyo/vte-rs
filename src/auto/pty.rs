@@ -2,19 +2,19 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use PtyFlags;
 use gio;
 use glib;
-use glib::StaticType;
-use glib::Value;
 use glib::object::IsA;
 use glib::object::ObjectType as ObjectType_;
 use glib::translate::*;
+use glib::StaticType;
+use glib::Value;
 use gobject_sys;
 use std::fmt;
 use std::mem;
 use std::ptr;
 use vte_sys;
+use PtyFlags;
 
 glib_wrapper! {
     pub struct Pty(Object<vte_sys::VtePty, vte_sys::VtePtyClass, PtyClass>);
@@ -95,19 +95,16 @@ impl Pty {
     //    unsafe { TODO: call vte_sys:vte_pty_spawn_async() }
     //}
 
-    //#[cfg(any(feature = "futures", feature = "dox"))]
+    //
     //#[cfg(any(feature = "v0_48", feature = "dox"))]
-    //pub fn spawn_async_future(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32) -> Box_<dyn future::Future<Output = Result<, >> + std::marker::Unpin> {
-        //use gio::GioFuture;
-        //use fragile::Fragile;
+    //pub fn spawn_async_future(&self, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, child_setup_data_destroy: Fn() + 'static, timeout: i32) -> Pin<Box_<dyn std::future::Future<Output = Result<, >> + 'static>> {
 
         //let working_directory = working_directory.map(ToOwned::to_owned);
         //let argv = argv.clone();
         //let envv = envv.map(ToOwned::to_owned);
         //let child_setup = child_setup.map(ToOwned::to_owned);
-        //GioFuture::new(self, move |obj, send| {
+        //Box_::pin(gio::GioFuture::new(self, move |obj, send| {
         //    let cancellable = gio::Cancellable::new();
-        //    let send = Fragile::new(send);
         //    obj.spawn_async(
         //        working_directory.as_ref().map(::std::borrow::Borrow::borrow),
         //        &argv,
@@ -118,12 +115,12 @@ impl Pty {
         //        timeout,
         //        Some(&cancellable),
         //        move |res| {
-        //            let _ = send.into_inner().send(res);
+        //            send.resolve(res);
         //        },
         //    );
 
         //    cancellable
-        //})
+        //}))
     //}
 
     pub fn get_property_flags(&self) -> PtyFlags {

@@ -2,30 +2,18 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-use CursorBlinkMode;
-use CursorShape;
-use EraseBinding;
-#[cfg(any(feature = "v0_50", feature = "dox"))]
-use Format;
-use Pty;
-use PtyFlags;
-#[cfg(any(feature = "v0_46", feature = "dox"))]
-use Regex;
-#[cfg(any(feature = "v0_52", feature = "dox"))]
-use TextBlinkMode;
-use WriteFlags;
 use gdk;
 use gio;
 use glib;
-use glib::GString;
-use glib::StaticType;
-use glib::Value;
 use glib::object::Cast;
 use glib::object::IsA;
 use glib::object::ObjectExt;
-use glib::signal::SignalHandlerId;
 use glib::signal::connect_raw;
+use glib::signal::SignalHandlerId;
 use glib::translate::*;
+use glib::GString;
+use glib::StaticType;
+use glib::Value;
 use glib_sys;
 use gobject_sys;
 use gtk;
@@ -38,6 +26,18 @@ use std::mem;
 use std::mem::transmute;
 use std::ptr;
 use vte_sys;
+use CursorBlinkMode;
+use CursorShape;
+use EraseBinding;
+#[cfg(any(feature = "v0_50", feature = "dox"))]
+use Format;
+use Pty;
+use PtyFlags;
+#[cfg(any(feature = "v0_46", feature = "dox"))]
+use Regex;
+#[cfg(any(feature = "v0_52", feature = "dox"))]
+use TextBlinkMode;
+use WriteFlags;
 
 glib_wrapper! {
     pub struct Terminal(Object<vte_sys::VteTerminal, vte_sys::VteTerminalClass, TerminalClass>) @extends gtk::Widget;
@@ -120,6 +120,12 @@ pub trait TerminalExt: 'static {
 
     fn get_cursor_shape(&self) -> CursorShape;
 
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn get_enable_bidi(&self) -> bool;
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn get_enable_shaping(&self) -> bool;
+
     #[cfg_attr(feature = "v0_54", deprecated)]
     fn get_encoding(&self) -> Option<GString>;
 
@@ -141,6 +147,7 @@ pub trait TerminalExt: 'static {
 
     fn get_pty(&self) -> Option<Pty>;
 
+    #[cfg_attr(feature = "v0_58", deprecated)]
     fn get_rewrap_on_resize(&self) -> bool;
 
     fn get_row_count(&self) -> libc::c_long;
@@ -271,6 +278,12 @@ pub trait TerminalExt: 'static {
 
     fn set_delete_binding(&self, binding: EraseBinding);
 
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn set_enable_bidi(&self, enable_bidi: bool);
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn set_enable_shaping(&self, enable_shaping: bool);
+
     #[cfg_attr(feature = "v0_54", deprecated)]
     fn set_encoding(&self, codeset: Option<&str>) -> Result<(), glib::Error>;
 
@@ -287,6 +300,7 @@ pub trait TerminalExt: 'static {
 
     fn set_pty(&self, pty: Option<&Pty>);
 
+    #[cfg_attr(feature = "v0_58", deprecated)]
     fn set_rewrap_on_resize(&self, rewrap: bool);
 
     fn set_scroll_on_keystroke(&self, scroll: bool);
@@ -304,7 +318,7 @@ pub trait TerminalExt: 'static {
     fn set_word_char_exceptions(&self, exceptions: &str);
 
     #[cfg(any(feature = "v0_48", feature = "dox"))]
-    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q);
+    fn spawn_async<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Option<Box_<dyn FnOnce(&Terminal, glib::Pid, &glib::Error) + 'static>>);
 
     #[cfg_attr(feature = "v0_48", deprecated)]
     fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, glib::Error>;
@@ -434,6 +448,12 @@ pub trait TerminalExt: 'static {
 
     fn connect_property_delete_binding_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn connect_property_enable_bidi_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn connect_property_enable_shaping_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
+
     #[cfg_attr(feature = "v0_54", deprecated)]
     fn connect_property_encoding_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
@@ -453,6 +473,7 @@ pub trait TerminalExt: 'static {
 
     fn connect_property_pty_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
+    #[cfg_attr(feature = "v0_58", deprecated)]
     fn connect_property_rewrap_on_resize_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
 
     fn connect_property_scroll_on_keystroke_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId;
@@ -618,6 +639,20 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     fn get_cursor_shape(&self) -> CursorShape {
         unsafe {
             from_glib(vte_sys::vte_terminal_get_cursor_shape(self.as_ref().to_glib_none().0))
+        }
+    }
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn get_enable_bidi(&self) -> bool {
+        unsafe {
+            from_glib(vte_sys::vte_terminal_get_enable_bidi(self.as_ref().to_glib_none().0))
+        }
+    }
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn get_enable_shaping(&self) -> bool {
+        unsafe {
+            from_glib(vte_sys::vte_terminal_get_enable_shaping(self.as_ref().to_glib_none().0))
         }
     }
 
@@ -1008,6 +1043,20 @@ impl<O: IsA<Terminal>> TerminalExt for O {
         }
     }
 
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn set_enable_bidi(&self, enable_bidi: bool) {
+        unsafe {
+            vte_sys::vte_terminal_set_enable_bidi(self.as_ref().to_glib_none().0, enable_bidi.to_glib());
+        }
+    }
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn set_enable_shaping(&self, enable_shaping: bool) {
+        unsafe {
+            vte_sys::vte_terminal_set_enable_shaping(self.as_ref().to_glib_none().0, enable_shaping.to_glib());
+        }
+    }
+
     fn set_encoding(&self, codeset: Option<&str>) -> Result<(), glib::Error> {
         unsafe {
             let mut error = ptr::null_mut();
@@ -1097,9 +1146,9 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     }
 
     #[cfg(any(feature = "v0_48", feature = "dox"))]
-    fn spawn_async<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Q) {
+    fn spawn_async<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags_: glib::SpawnFlags, child_setup: Option<Box_<dyn Fn() + 'static>>, timeout: i32, cancellable: Option<&P>, callback: Option<Box_<dyn FnOnce(&Terminal, glib::Pid, &glib::Error) + 'static>>) {
         let child_setup_data: Box_<Option<Box_<dyn Fn() + 'static>>> = Box_::new(child_setup);
-        unsafe extern "C" fn child_setup_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(user_data: glib_sys::gpointer) {
+        unsafe extern "C" fn child_setup_func<P: IsA<gio::Cancellable>>(user_data: glib_sys::gpointer) {
             let callback: &Option<Box_<dyn Fn() + 'static>> = &*(user_data as *mut _);
             if let Some(ref callback) = *callback {
                 callback()
@@ -1107,22 +1156,23 @@ impl<O: IsA<Terminal>> TerminalExt for O {
                 panic!("cannot get closure...")
             };
         }
-        let child_setup = if child_setup_data.is_some() { Some(child_setup_func::<P, Q> as _) } else { None };
-        let callback_data: Box_<Q> = Box_::new(callback);
-        unsafe extern "C" fn callback_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(terminal: *mut vte_sys::VteTerminal, pid: glib_sys::GPid, error: *mut glib_sys::GError, user_data: glib_sys::gpointer) {
+        let child_setup = if child_setup_data.is_some() { Some(child_setup_func::<P> as _) } else { None };
+        let callback_data: Box_<Option<Box_<dyn FnOnce(&Terminal, glib::Pid, &glib::Error) + 'static>>> = Box_::new(callback);
+        unsafe extern "C" fn callback_func<P: IsA<gio::Cancellable>>(terminal: *mut vte_sys::VteTerminal, pid: glib_sys::GPid, error: *mut glib_sys::GError, user_data: glib_sys::gpointer) {
             let terminal = from_glib_borrow(terminal);
             let pid = from_glib(pid);
             let error = from_glib_borrow(error);
-            let callback: &Q = &*(user_data as *mut _);
-            (*callback)(&terminal, pid, &error);
+            let callback: Box_<Option<Box_<dyn FnOnce(&Terminal, glib::Pid, &glib::Error) + 'static>>> = Box_::from_raw(user_data as *mut _);
+            let callback = (*callback).expect("cannot get closure...");
+            callback(&terminal, pid, &error)
         }
-        let callback = Some(callback_func::<P, Q> as _);
-        unsafe extern "C" fn child_setup_data_destroy_func<P: IsA<gio::Cancellable>, Q: Fn(&Terminal, glib::Pid, &glib::Error) + 'static>(data: glib_sys::gpointer) {
+        let callback = if callback_data.is_some() { Some(callback_func::<P> as _) } else { None };
+        unsafe extern "C" fn child_setup_data_destroy_func<P: IsA<gio::Cancellable>>(data: glib_sys::gpointer) {
             let _callback: Box_<Option<Box_<dyn Fn() + 'static>>> = Box_::from_raw(data as *mut _);
         }
-        let destroy_call8 = Some(child_setup_data_destroy_func::<P, Q> as _);
+        let destroy_call8 = Some(child_setup_data_destroy_func::<P> as _);
         let super_callback0: Box_<Option<Box_<dyn Fn() + 'static>>> = child_setup_data;
-        let super_callback1: Box_<Q> = callback_data;
+        let super_callback1: Box_<Option<Box_<dyn FnOnce(&Terminal, glib::Pid, &glib::Error) + 'static>>> = callback_data;
         unsafe {
             vte_sys::vte_terminal_spawn_async(self.as_ref().to_glib_none().0, pty_flags.to_glib(), working_directory.to_glib_none().0, argv.to_glib_none().0, envv.to_glib_none().0, spawn_flags_.to_glib(), child_setup, Box_::into_raw(super_callback0) as *mut _, destroy_call8, timeout, cancellable.map(|p| p.as_ref()).to_glib_none().0, callback, Box_::into_raw(super_callback1) as *mut _);
         }
@@ -1862,6 +1912,36 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::delete-binding\0".as_ptr() as *const _,
                 Some(transmute(notify_delete_binding_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+        }
+    }
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn connect_property_enable_bidi_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_enable_bidi_trampoline<P, F: Fn(&P) + 'static>(this: *mut vte_sys::VteTerminal, _param_spec: glib_sys::gpointer, f: glib_sys::gpointer)
+            where P: IsA<Terminal>
+        {
+            let f: &F = &*(f as *const F);
+            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(self.as_ptr() as *mut _, b"notify::enable-bidi\0".as_ptr() as *const _,
+                Some(transmute(notify_enable_bidi_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+        }
+    }
+
+    #[cfg(any(feature = "v0_58", feature = "dox"))]
+    fn connect_property_enable_shaping_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        unsafe extern "C" fn notify_enable_shaping_trampoline<P, F: Fn(&P) + 'static>(this: *mut vte_sys::VteTerminal, _param_spec: glib_sys::gpointer, f: glib_sys::gpointer)
+            where P: IsA<Terminal>
+        {
+            let f: &F = &*(f as *const F);
+            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+        }
+        unsafe {
+            let f: Box_<F> = Box_::new(f);
+            connect_raw(self.as_ptr() as *mut _, b"notify::enable-shaping\0".as_ptr() as *const _,
+                Some(transmute(notify_enable_shaping_trampoline::<Self, F> as usize)), Box_::into_raw(f))
         }
     }
 
