@@ -53,3 +53,6 @@ status = "generate"
     [[object.function]]
     name = "event_check_regex_simple"
     ignore = true
+    [[object.function]]
+    name = "watch_child"
+    ignore = true

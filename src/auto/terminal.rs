@@ -33,8 +33,6 @@ use EraseBinding;
 use Format;
 use Pty;
 use PtyFlags;
-#[cfg(any(feature = "v0_46", feature = "dox"))]
-use Regex;
 #[cfg(any(feature = "v0_52", feature = "dox"))]
 use TextBlinkMode;
 use WriteFlags;
@@ -182,8 +180,8 @@ pub trait TerminalExt: 'static {
     //#[cfg_attr(feature = "v0_46", deprecated)]
     //fn match_add_gregex(&self, gregex: /*Ignored*/&glib::Regex, gflags: /*Ignored*/glib::RegexMatchFlags) -> i32;
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn match_add_regex(&self, regex: &Regex, flags: u32) -> i32;
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn match_add_regex(&self, regex: /*Ignored*/&Regex, flags: u32) -> i32;
 
     #[cfg_attr(feature = "v0_46", deprecated)]
     fn match_check(&self, column: libc::c_long, row: libc::c_long) -> (GString, i32);
@@ -217,16 +215,16 @@ pub trait TerminalExt: 'static {
     //#[cfg_attr(feature = "v0_46", deprecated)]
     //fn search_get_gregex(&self) -> /*Ignored*/Option<glib::Regex>;
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn search_get_regex(&self) -> Option<Regex>;
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn search_get_regex(&self) -> /*Ignored*/Option<Regex>;
 
     fn search_get_wrap_around(&self) -> bool;
 
     //#[cfg_attr(feature = "v0_46", deprecated)]
     //fn search_set_gregex(&self, gregex: /*Ignored*/Option<&glib::Regex>, gflags: /*Ignored*/glib::RegexMatchFlags);
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn search_set_regex(&self, regex: Option<&Regex>, flags: u32);
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn search_set_regex(&self, regex: /*Ignored*/Option<&Regex>, flags: u32);
 
     fn search_set_wrap_around(&self, wrap_around: bool);
 
@@ -324,8 +322,6 @@ pub trait TerminalExt: 'static {
     fn spawn_sync<P: IsA<gio::Cancellable>>(&self, pty_flags: PtyFlags, working_directory: Option<&str>, argv: &[&std::path::Path], envv: &[&std::path::Path], spawn_flags: glib::SpawnFlags, child_setup: Option<&mut dyn (FnMut())>, cancellable: Option<&P>) -> Result<glib::Pid, glib::Error>;
 
     fn unselect_all(&self);
-
-    fn watch_child(&self, child_pid: glib::Pid);
 
     fn write_contents_sync<P: IsA<gio::OutputStream>, Q: IsA<gio::Cancellable>>(&self, stream: &P, flags: WriteFlags, cancellable: Option<&Q>) -> Result<(), glib::Error>;
 
@@ -784,12 +780,10 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     //    unsafe { TODO: call vte_sys:vte_terminal_match_add_gregex() }
     //}
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn match_add_regex(&self, regex: &Regex, flags: u32) -> i32 {
-        unsafe {
-            vte_sys::vte_terminal_match_add_regex(self.as_ref().to_glib_none().0, regex.to_glib_none().0, flags)
-        }
-    }
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn match_add_regex(&self, regex: /*Ignored*/&Regex, flags: u32) -> i32 {
+    //    unsafe { TODO: call vte_sys:vte_terminal_match_add_regex() }
+    //}
 
     fn match_check(&self, column: libc::c_long, row: libc::c_long) -> (GString, i32) {
         unsafe {
@@ -881,12 +875,10 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     //    unsafe { TODO: call vte_sys:vte_terminal_search_get_gregex() }
     //}
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn search_get_regex(&self) -> Option<Regex> {
-        unsafe {
-            from_glib_none(vte_sys::vte_terminal_search_get_regex(self.as_ref().to_glib_none().0))
-        }
-    }
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn search_get_regex(&self) -> /*Ignored*/Option<Regex> {
+    //    unsafe { TODO: call vte_sys:vte_terminal_search_get_regex() }
+    //}
 
     fn search_get_wrap_around(&self) -> bool {
         unsafe {
@@ -898,12 +890,10 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     //    unsafe { TODO: call vte_sys:vte_terminal_search_set_gregex() }
     //}
 
-    #[cfg(any(feature = "v0_46", feature = "dox"))]
-    fn search_set_regex(&self, regex: Option<&Regex>, flags: u32) {
-        unsafe {
-            vte_sys::vte_terminal_search_set_regex(self.as_ref().to_glib_none().0, regex.to_glib_none().0, flags);
-        }
-    }
+    //#[cfg(any(feature = "v0_46", feature = "dox"))]
+    //fn search_set_regex(&self, regex: /*Ignored*/Option<&Regex>, flags: u32) {
+    //    unsafe { TODO: call vte_sys:vte_terminal_search_set_regex() }
+    //}
 
     fn search_set_wrap_around(&self, wrap_around: bool) {
         unsafe {
@@ -1202,12 +1192,6 @@ impl<O: IsA<Terminal>> TerminalExt for O {
     fn unselect_all(&self) {
         unsafe {
             vte_sys::vte_terminal_unselect_all(self.as_ref().to_glib_none().0);
-        }
-    }
-
-    fn watch_child(&self, child_pid: glib::Pid) {
-        unsafe {
-            vte_sys::vte_terminal_watch_child(self.as_ref().to_glib_none().0, child_pid.to_glib());
         }
     }
 
