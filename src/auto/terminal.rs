@@ -1301,12 +1301,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"bell\0".as_ptr() as *const _,
-                Some(transmute(bell_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(bell_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1315,12 +1315,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), width, height)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), width, height)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"char-size-changed\0".as_ptr() as *const _,
-                Some(transmute(char_size_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(char_size_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1329,12 +1329,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), status)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), status)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"child-exited\0".as_ptr() as *const _,
-                Some(transmute(child_exited_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(child_exited_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1343,12 +1343,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), &GString::from_glib_borrow(text), size)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), &GString::from_glib_borrow(text), size)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"commit\0".as_ptr() as *const _,
-                Some(transmute(commit_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(commit_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1357,12 +1357,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"contents-changed\0".as_ptr() as *const _,
-                Some(transmute(contents_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(contents_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1371,17 +1371,17 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"copy-clipboard\0".as_ptr() as *const _,
-                Some(transmute(copy_clipboard_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(copy_clipboard_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
     fn emit_copy_clipboard(&self) {
-        let _ = unsafe { glib::Object::from_glib_borrow(self.to_glib_none().0 as *mut gobject_sys::GObject).emit("copy-clipboard", &[]).unwrap() };
+        let _ = unsafe { glib::Object::from_glib_borrow(self.as_ptr() as *mut gobject_sys::GObject).emit("copy-clipboard", &[]).unwrap() };
     }
 
     fn connect_current_directory_uri_changed<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -1389,12 +1389,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"current-directory-uri-changed\0".as_ptr() as *const _,
-                Some(transmute(current_directory_uri_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(current_directory_uri_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1403,12 +1403,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"current-file-uri-changed\0".as_ptr() as *const _,
-                Some(transmute(current_file_uri_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(current_file_uri_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1417,12 +1417,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"cursor-moved\0".as_ptr() as *const _,
-                Some(transmute(cursor_moved_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(cursor_moved_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1431,12 +1431,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"decrease-font-size\0".as_ptr() as *const _,
-                Some(transmute(decrease_font_size_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(decrease_font_size_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1445,12 +1445,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"deiconify-window\0".as_ptr() as *const _,
-                Some(transmute(deiconify_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(deiconify_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1459,12 +1459,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"encoding-changed\0".as_ptr() as *const _,
-                Some(transmute(encoding_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(encoding_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1473,12 +1473,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"eof\0".as_ptr() as *const _,
-                Some(transmute(eof_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(eof_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1492,12 +1492,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"icon-title-changed\0".as_ptr() as *const _,
-                Some(transmute(icon_title_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(icon_title_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1506,12 +1506,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"iconify-window\0".as_ptr() as *const _,
-                Some(transmute(iconify_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(iconify_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1520,12 +1520,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"increase-font-size\0".as_ptr() as *const _,
-                Some(transmute(increase_font_size_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(increase_font_size_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1534,12 +1534,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"lower-window\0".as_ptr() as *const _,
-                Some(transmute(lower_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(lower_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1548,12 +1548,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"maximize-window\0".as_ptr() as *const _,
-                Some(transmute(maximize_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(maximize_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1562,12 +1562,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), x, y)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), x, y)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"move-window\0".as_ptr() as *const _,
-                Some(transmute(move_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(move_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1576,17 +1576,17 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"paste-clipboard\0".as_ptr() as *const _,
-                Some(transmute(paste_clipboard_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(paste_clipboard_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
     fn emit_paste_clipboard(&self) {
-        let _ = unsafe { glib::Object::from_glib_borrow(self.to_glib_none().0 as *mut gobject_sys::GObject).emit("paste-clipboard", &[]).unwrap() };
+        let _ = unsafe { glib::Object::from_glib_borrow(self.as_ptr() as *mut gobject_sys::GObject).emit("paste-clipboard", &[]).unwrap() };
     }
 
     fn connect_raise_window<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
@@ -1594,12 +1594,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"raise-window\0".as_ptr() as *const _,
-                Some(transmute(raise_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(raise_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1608,12 +1608,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"refresh-window\0".as_ptr() as *const _,
-                Some(transmute(refresh_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(refresh_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1622,12 +1622,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), width, height)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), width, height)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"resize-window\0".as_ptr() as *const _,
-                Some(transmute(resize_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(resize_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1636,12 +1636,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"restore-window\0".as_ptr() as *const _,
-                Some(transmute(restore_window_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(restore_window_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1650,12 +1650,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"selection-changed\0".as_ptr() as *const _,
-                Some(transmute(selection_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(selection_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1664,12 +1664,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"text-deleted\0".as_ptr() as *const _,
-                Some(transmute(text_deleted_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(text_deleted_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1678,12 +1678,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"text-inserted\0".as_ptr() as *const _,
-                Some(transmute(text_inserted_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(text_inserted_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1692,12 +1692,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"text-modified\0".as_ptr() as *const _,
-                Some(transmute(text_modified_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(text_modified_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1706,12 +1706,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast(), delta)
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref(), delta)
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"text-scrolled\0".as_ptr() as *const _,
-                Some(transmute(text_scrolled_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(text_scrolled_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1720,12 +1720,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"window-title-changed\0".as_ptr() as *const _,
-                Some(transmute(window_title_changed_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(window_title_changed_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1734,12 +1734,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::allow-bold\0".as_ptr() as *const _,
-                Some(transmute(notify_allow_bold_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_allow_bold_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1749,12 +1749,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::allow-hyperlink\0".as_ptr() as *const _,
-                Some(transmute(notify_allow_hyperlink_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_allow_hyperlink_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1763,12 +1763,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::audible-bell\0".as_ptr() as *const _,
-                Some(transmute(notify_audible_bell_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_audible_bell_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1777,12 +1777,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::backspace-binding\0".as_ptr() as *const _,
-                Some(transmute(notify_backspace_binding_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_backspace_binding_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1792,12 +1792,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::bold-is-bright\0".as_ptr() as *const _,
-                Some(transmute(notify_bold_is_bright_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_bold_is_bright_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1807,12 +1807,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::cell-height-scale\0".as_ptr() as *const _,
-                Some(transmute(notify_cell_height_scale_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_cell_height_scale_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1822,12 +1822,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::cell-width-scale\0".as_ptr() as *const _,
-                Some(transmute(notify_cell_width_scale_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_cell_width_scale_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1836,12 +1836,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::cjk-ambiguous-width\0".as_ptr() as *const _,
-                Some(transmute(notify_cjk_ambiguous_width_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_cjk_ambiguous_width_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1850,12 +1850,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::current-directory-uri\0".as_ptr() as *const _,
-                Some(transmute(notify_current_directory_uri_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_current_directory_uri_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1864,12 +1864,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::current-file-uri\0".as_ptr() as *const _,
-                Some(transmute(notify_current_file_uri_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_current_file_uri_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1878,12 +1878,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::cursor-blink-mode\0".as_ptr() as *const _,
-                Some(transmute(notify_cursor_blink_mode_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_cursor_blink_mode_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1892,12 +1892,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::cursor-shape\0".as_ptr() as *const _,
-                Some(transmute(notify_cursor_shape_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_cursor_shape_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1906,12 +1906,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::delete-binding\0".as_ptr() as *const _,
-                Some(transmute(notify_delete_binding_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_delete_binding_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1921,12 +1921,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::enable-bidi\0".as_ptr() as *const _,
-                Some(transmute(notify_enable_bidi_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_enable_bidi_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1936,12 +1936,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::enable-shaping\0".as_ptr() as *const _,
-                Some(transmute(notify_enable_shaping_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_enable_shaping_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1950,12 +1950,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::encoding\0".as_ptr() as *const _,
-                Some(transmute(notify_encoding_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_encoding_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1964,12 +1964,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::font-desc\0".as_ptr() as *const _,
-                Some(transmute(notify_font_desc_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_font_desc_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1978,12 +1978,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::font-scale\0".as_ptr() as *const _,
-                Some(transmute(notify_font_scale_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_font_scale_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -1993,12 +1993,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::hyperlink-hover-uri\0".as_ptr() as *const _,
-                Some(transmute(notify_hyperlink_hover_uri_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_hyperlink_hover_uri_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2007,12 +2007,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::icon-title\0".as_ptr() as *const _,
-                Some(transmute(notify_icon_title_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_icon_title_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2021,12 +2021,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::input-enabled\0".as_ptr() as *const _,
-                Some(transmute(notify_input_enabled_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_input_enabled_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2035,12 +2035,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::pointer-autohide\0".as_ptr() as *const _,
-                Some(transmute(notify_pointer_autohide_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_pointer_autohide_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2049,12 +2049,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::pty\0".as_ptr() as *const _,
-                Some(transmute(notify_pty_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_pty_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2063,12 +2063,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::rewrap-on-resize\0".as_ptr() as *const _,
-                Some(transmute(notify_rewrap_on_resize_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_rewrap_on_resize_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2077,12 +2077,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::scroll-on-keystroke\0".as_ptr() as *const _,
-                Some(transmute(notify_scroll_on_keystroke_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_scroll_on_keystroke_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2091,12 +2091,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::scroll-on-output\0".as_ptr() as *const _,
-                Some(transmute(notify_scroll_on_output_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_scroll_on_output_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2105,12 +2105,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::scrollback-lines\0".as_ptr() as *const _,
-                Some(transmute(notify_scrollback_lines_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_scrollback_lines_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2120,12 +2120,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::text-blink-mode\0".as_ptr() as *const _,
-                Some(transmute(notify_text_blink_mode_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_text_blink_mode_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2134,12 +2134,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::window-title\0".as_ptr() as *const _,
-                Some(transmute(notify_window_title_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_window_title_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 
@@ -2149,12 +2149,12 @@ impl<O: IsA<Terminal>> TerminalExt for O {
             where P: IsA<Terminal>
         {
             let f: &F = &*(f as *const F);
-            f(&Terminal::from_glib_borrow(this).unsafe_cast())
+            f(&Terminal::from_glib_borrow(this).unsafe_cast_ref())
         }
         unsafe {
             let f: Box_<F> = Box_::new(f);
             connect_raw(self.as_ptr() as *mut _, b"notify::word-char-exceptions\0".as_ptr() as *const _,
-                Some(transmute(notify_word_char_exceptions_trampoline::<Self, F> as usize)), Box_::into_raw(f))
+                Some(transmute::<_, unsafe extern "C" fn()>(notify_word_char_exceptions_trampoline::<Self, F> as *const ())), Box_::into_raw(f))
         }
     }
 }

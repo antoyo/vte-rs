@@ -17,6 +17,7 @@ use vte_sys;
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum CursorBlinkMode {
     System,
     On,
@@ -89,6 +90,7 @@ impl SetValue for CursorBlinkMode {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum CursorShape {
     Block,
     Ibeam,
@@ -161,6 +163,7 @@ impl SetValue for CursorShape {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum EraseBinding {
     Auto,
     AsciiBackspace,
@@ -242,6 +245,7 @@ impl SetValue for EraseBinding {
 #[cfg(any(feature = "v0_50", feature = "dox"))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum Format {
     Text,
     Html,
@@ -317,6 +321,7 @@ impl SetValue for Format {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum PtyError {
     PtyHelperFailed,
     Pty98Failed,
@@ -406,6 +411,7 @@ impl SetValue for PtyError {
 #[cfg(any(feature = "v0_52", feature = "dox"))]
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum TextBlinkMode {
     Never,
     Focused,
@@ -489,6 +495,7 @@ impl SetValue for TextBlinkMode {
 
 #[derive(Debug, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[derive(Clone, Copy)]
+#[non_exhaustive]
 pub enum WriteFlags {
     Default,
     #[doc(hidden)]
