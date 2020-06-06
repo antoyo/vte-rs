@@ -51,8 +51,5 @@ status = "generate"
     name = "set_colors"
     ignore = true
     [[object.function]]
-    name = "event_check_regex_simple"
-    ignore = true
-    [[object.function]]
     name = "watch_child"
     ignore = true
