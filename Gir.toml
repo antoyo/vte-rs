@@ -42,7 +42,6 @@ manual = [
     "Gtk.Widget",
     "Gtk.Window",
     "Pango.FontDescription",
-    "Vte.Regex",
 ]
 
 [[object]]
